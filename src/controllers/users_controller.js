@@ -37,12 +37,21 @@ exports.UserController = class UserController {
     }
   }
 
-  async userDelete(req, res) {
-    res.send(`delete user ${req.params.user_id}`);
-  }
-
   async usersGet(req, res) {
     const users = await this.users.getAll();
     okJson(res, users);
+  }
+
+  async userDelete(req, res) {
+    try {
+      const success = await this.users.delete(req.params.user_id);
+      if (success) {
+        okJson(res, { success });
+      } else {
+        errorInternalError(res, "Internal Server Error", "Could not delete user");
+      }
+    } catch (e) {
+      errorInternalError(res, "Internal Server Error", e.message);
+    }
   }
 };

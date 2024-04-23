@@ -54,8 +54,12 @@ exports.AuthController = class AuthController {
 
   async authLogout(req, res) {
     req.session.destroy((err) => {
-      if (err) console.error(err);
+      if (err) {
+        console.error(err);
+        errorInternalError(res, "Internal Server Error", "Could not logout");
+      } else {
+        okJson({ success: true });
+      }
     });
-    okJson(res);
   };
 };

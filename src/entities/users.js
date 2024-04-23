@@ -57,4 +57,10 @@ exports.Users = class Users {
   async getAll() {
     return await this.db.collection("users").find({}, this.defaultOptions).toArray();
   }
+
+  async delete(userId) {
+    const user = await this.db.collection("users")
+      .deleteOne({ _id: new ObjectId(userId) });
+    return user.deletedCount === 1;
+  }
 };

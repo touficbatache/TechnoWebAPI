@@ -103,7 +103,7 @@ function init(db) {
     (...args) => messagesController.messagesGetAllPrivate(...args),
   );
 
-  router.get(
+  router.post(
     "/messages/search",
     (...args) => authHandler.authorizeAuthenticated(...args),
     (...args) => messagesController.messagesSearch(...args),
