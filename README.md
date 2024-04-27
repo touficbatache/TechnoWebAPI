@@ -1,7 +1,7 @@
 # Techno Web Forum App - API
 
 This project is the backend for the Techno Web Forum App.
-It is designed to work with the frontend implemented using ReactJS.
+It is designed to work with the [frontend implemented using ReactJS](https://github.com/HayaMamlouk/TechnoWebReact).
 
 ## How to install?
 
@@ -538,3 +538,8 @@ content-type: application/json
     "success": boolean
 }
 ```
+
+## Creators
+
+- [BATACHE Toufic](https://github.com/touficbatache/)
+- [MAMLOUK Haya](https://github.com/HayaMamlouk/)
