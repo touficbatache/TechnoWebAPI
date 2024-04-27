@@ -58,7 +58,7 @@ exports.AuthController = class AuthController {
         console.error(err);
         errorInternalError(res, "Internal Server Error", "Could not logout");
       } else {
-        okJson({ success: true });
+        okJson(res, { success: true });
       }
     });
   };
