@@ -28,6 +28,7 @@ The `example.env` file lays out the template needed for the API to function.
 You should provide:
 
 - Database config: NAME and URL:PORT
+- Frontend URL (needed to allow CORS requests)
 - Server config: URL, PORT and SESSION SECRET (needed for express session to work correctly)
 
 ## Start the backend service

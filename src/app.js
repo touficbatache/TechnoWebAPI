@@ -12,7 +12,7 @@ const app = express();
 // Handle CORS
 const cors = require("cors");
 app.use(cors({
-  origin: "http://localhost:5173", // Very important
+  origin: process.env.FRONT_URL, // Very important
   credentials: true, // Needed for express session
 }));
 
