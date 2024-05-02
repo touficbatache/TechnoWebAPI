@@ -326,6 +326,7 @@ content-type: application/json
 ```
 {
     "type": "public|private",
+    "title": "TITLE",
     "content": "CONTENT"
 }
 ```
@@ -511,6 +512,7 @@ content-type: application/json
         "_id": "MESSAGEID1",
         "type": "public|private",
         "userId": "USERID",
+        "title": "TITLE",
         "content": "CONTENT",
         "date": DATE,
         "replyTo": "MESSAGEID0"|null
