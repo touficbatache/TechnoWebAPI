@@ -11,8 +11,8 @@ exports.MessagesController = class MessagesController {
   }
 
   async messageCreate(req, res) {
-    const { type, content, replyTo } = req.body;
-    if (!type || !content) {
+    const { type, content, replyTo, title } = req.body;
+    if (!type || !content || (!replyTo && !title	)) {
       errorBadRequest(res, "Bad Request", "Missing fields");
     } else if (req.session.user.role !== "admin" && type === "private") {
       errorUnauthorized(res, "Unauthorized", "User doesn't have rights");
@@ -34,8 +34,11 @@ exports.MessagesController = class MessagesController {
             );
             return;
           }
+        } else if (!title) {
+            errorBadRequest(res, "Bad Request", "Title is required for new messages");
+            return;
         }
-        const messageId = await this.messages.create(type, req.session.userid, content, Date.now(), replyTo);
+        const messageId = await this.messages.create(type, req.session.userid, content, title, Date.now(), replyTo);
         createdJson(res, { id: messageId });
       } catch (e) {
         errorInternalError(res, "Internal Server Error", e.message);

@@ -14,9 +14,14 @@ exports.Messages = class Messages {
     });
   }
 
-  async create(type, userId, content, date, replyTo = null) {
+  async create(type, userId, content, title, date, replyTo = null) {
+
+    if (!replyTo && !title) {
+      throw new Error("Title is required for new messages");
+    }
+
     const message = await this.db.collection("messages").insertOne({
-      type, userId, content, date, replyTo,
+      type, userId, content, title, date, replyTo,
     });
 
     if (message == null) {
