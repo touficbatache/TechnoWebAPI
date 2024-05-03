@@ -32,9 +32,7 @@ exports.AuthController = class AuthController {
             } else {
               // C'est bon, nouvelle session créée
               req.session.userid = user._id;
-              okJson(res, {
-                success: true,
-              });
+              okJson(res, user);
             }
           });
         } else {

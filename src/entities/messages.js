@@ -94,7 +94,17 @@ exports.Messages = class Messages {
     return await this.db.collection("messages").aggregate([
       {
         $match: {
-          content: { $regex: regex, $options: "i" },
+          $or: [
+            {
+              content: { $regex: regex, $options: "i" },
+            },
+            {
+              title: { $regex: regex, $options: "i" },
+            },
+            {
+              userId: { $regex: regex, $options: "i" },
+            },
+          ],
           ...(
             !includePrivate ? {
               type: "public",

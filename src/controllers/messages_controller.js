@@ -12,7 +12,7 @@ exports.MessagesController = class MessagesController {
 
   async messageCreate(req, res) {
     const { type, content, replyTo, title } = req.body;
-    if (!type || !content || (!replyTo !== !title)) {
+    if (!type || !content || (!replyTo === !title)) {
       errorBadRequest(res, "Bad Request", "Missing fields");
     } else if (req.session.user.role !== "admin" && type === "private") {
       errorUnauthorized(res, "Unauthorized", "User doesn't have rights");
