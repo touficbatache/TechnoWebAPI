@@ -55,7 +55,9 @@ exports.Users = class Users {
   }
 
   async getAll() {
-    return await this.db.collection("users").find({}, this.defaultOptions).toArray();
+    return await this.db.collection("users")
+      .find({ $or: [{ validated: true }, { validated: { $exists: false } }] }, this.defaultOptions)
+      .toArray();
   }
 
   async delete(userId) {
