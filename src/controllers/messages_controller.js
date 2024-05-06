@@ -94,11 +94,16 @@ exports.MessagesController = class MessagesController {
 
   async messageDelete(req, res) {
     try {
-      const success = await this.messages.delete(req.params.messageId);
-      if (success) {
-        okJson(res, { success });
+      const message = await this.messages.get(req.params.messageId);
+      if (req.session.user.role === "admin" || req.session.user._id === message.userId) {
+        const success = await this.messages.delete(req.params.messageId);
+        if (success) {
+          okJson(res, { success });
+        } else {
+          errorInternalError(res, "Internal Server Error", "Could not delete message");
+        }
       } else {
-        errorInternalError(res, "Internal Server Error", "Could not delete message");
+        errorUnauthorized(res);
       }
     } catch (e) {
       errorInternalError(res, "Internal Server Error", e.message);

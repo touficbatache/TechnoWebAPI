@@ -35,7 +35,7 @@ function init(db) {
 
   router.delete(
     "/user/:user_id",
-    (...args) => authHandler.authorizeAdmin(...args),
+    (...args) => authHandler.authorizeAuthenticated(...args),
     (...args) => userController.userDelete(...args),
   );
 
@@ -117,7 +117,7 @@ function init(db) {
 
   router.delete(
     "/message/:messageId",
-    (...args) => authHandler.authorizeAdmin(...args),
+    (...args) => authHandler.authorizeAuthenticated(...args),
     (...args) => messagesController.messageDelete(...args),
   );
 

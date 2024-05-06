@@ -1,5 +1,5 @@
 const {
-  errorInternalError, errorNotFound, okJson, createdJson, errorBadRequest,
+  errorInternalError, errorNotFound, okJson, createdJson, errorBadRequest, errorUnauthorized,
 } = require("../utils/http_handlers");
 const { Users } = require("../entities/users");
 const { ValidationDemands } = require("../entities/validation_demands");
@@ -44,11 +44,15 @@ exports.UserController = class UserController {
 
   async userDelete(req, res) {
     try {
-      const success = await this.users.delete(req.params.user_id);
-      if (success) {
-        okJson(res, { success });
+      if (req.session.user.role === "admin" || req.session.user._id === req.params.user_id) {
+        const success = await this.users.delete(req.params.user_id);
+        if (success) {
+          okJson(res, { success });
+        } else {
+          errorInternalError(res, "Internal Server Error", "Could not delete user");
+        }
       } else {
-        errorInternalError(res, "Internal Server Error", "Could not delete user");
+        errorUnauthorized(res);
       }
     } catch (e) {
       errorInternalError(res, "Internal Server Error", e.message);

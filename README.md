@@ -144,7 +144,7 @@ content-type: application/json
 
 **Needed authorization:**
 
-`ADMIN`
+`ADMIN` or `SELF`
 
 **Request:**
 
@@ -525,7 +525,7 @@ content-type: application/json
 
 **Needed authorization:**
 
-`ADMIN`
+`ADMIN` or `SELF`
 
 **Request:**
 
