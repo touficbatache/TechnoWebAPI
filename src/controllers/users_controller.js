@@ -44,7 +44,7 @@ exports.UserController = class UserController {
 
   async userDelete(req, res) {
     try {
-      if (req.session.user.role === "admin" || req.session.user._id === req.params.user_id) {
+      if (req.session.user.role === "admin" || req.session.user._id.toString() === req.params.user_id) {
         const success = await this.users.delete(req.params.user_id);
         if (success) {
           okJson(res, { success });
