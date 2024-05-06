@@ -44,10 +44,22 @@ exports.UserController = class UserController {
 
   async userDelete(req, res) {
     try {
-      if (req.session.user.role === "admin" || req.session.user._id.toString() === req.params.user_id) {
+      const isCurrentUser = req.session.user._id.toString() === req.params.user_id;
+      if (req.session.user.role === "admin" || isCurrentUser) {
         const success = await this.users.delete(req.params.user_id);
         if (success) {
-          okJson(res, { success });
+          if (isCurrentUser) {
+            req.session.destroy((err) => {
+              if (err) {
+                console.error(err);
+                errorInternalError(res, "Internal Server Error", "Could not logout after deletion");
+              } else {
+                res.clearCookie("connect.sid", { path: "/" }).status(200).json({ success: true });
+              }
+            });
+          } else {
+            okJson(res, { success });
+          }
         } else {
           errorInternalError(res, "Internal Server Error", "Could not delete user");
         }
