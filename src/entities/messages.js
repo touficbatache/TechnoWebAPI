@@ -115,9 +115,19 @@ exports.Messages = class Messages {
     ]).toArray();
   }
 
+  async #getMessagesChildrenIdsRecursively(parentId, result) {
+    result.push(new ObjectId(parentId));
+    const children = await this.db.collection("messages").find({ replyTo: parentId });
+    while (children.hasNext()) {
+      const id = children.next()._id;
+      await this.#getMessagesChildrenIdsRecursively(id, result);
+    }
+  }
+
   async delete(messageId) {
-    const message = await this.db.collection("messages")
-      .deleteOne({ _id: new ObjectId(messageId) });
-    return message.deletedCount === 1;
+    let messagesToDeleteIds = [];
+    await this.#getMessagesChildrenIdsRecursively(messageId, messagesToDeleteIds);
+    const messages = await this.db.collection("messages").deleteMany({ _id: { $in: messagesToDeleteIds } });
+    return messages.deletedCount >= 1;
   }
 };
