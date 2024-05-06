@@ -117,15 +117,16 @@ exports.Messages = class Messages {
 
   async #getMessagesChildrenIdsRecursively(parentId, result) {
     result.push(new ObjectId(parentId));
-    const children = await this.db.collection("messages").find({ replyTo: parentId });
-    while (children.hasNext()) {
-      const id = children.next()._id;
+    const children = this.db.collection("messages").find({ replyTo: parentId });
+    while (await children.hasNext()) {
+      const next = await children.next();
+      const id = next._id.toString();
       await this.#getMessagesChildrenIdsRecursively(id, result);
     }
   }
 
   async delete(messageId) {
-    let messagesToDeleteIds = [];
+    const messagesToDeleteIds = [];
     await this.#getMessagesChildrenIdsRecursively(messageId, messagesToDeleteIds);
     const messages = await this.db.collection("messages").deleteMany({ _id: { $in: messagesToDeleteIds } });
     return messages.deletedCount >= 1;

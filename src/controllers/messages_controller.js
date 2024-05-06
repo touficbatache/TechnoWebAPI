@@ -95,7 +95,7 @@ exports.MessagesController = class MessagesController {
   async messageDelete(req, res) {
     try {
       const message = await this.messages.get(req.params.messageId);
-      if (req.session.user.role === "admin" || req.session.user._id === message.userId) {
+      if (req.session.user.role === "admin" || req.session.user._id.toString() === message.userId) {
         const success = await this.messages.delete(req.params.messageId);
         if (success) {
           okJson(res, { success });
